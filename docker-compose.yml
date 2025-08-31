@@ -11,7 +11,9 @@ services:
     volumes:
       - ./app:/app
     command: >
-      sh -c "python manage.py runserver 0.0.0.0:8000" 
+      sh -c "python manage.py wait_for_db &&
+        python manage.py migrate &&
+        python manage.py runserver 0.0.0.0:8000" 
     environment:
       - DB_HOST=db
       - DB_PORT=5433
@@ -30,7 +32,7 @@ services:
       POSTGRES_USER: recipe_user_dev
       POSTGRES_PASSWORD: S3bu_123
     ports:
-      - "5433:5433"
+      - "5433:5432"
 
 volumes:
   dev-db-data:
